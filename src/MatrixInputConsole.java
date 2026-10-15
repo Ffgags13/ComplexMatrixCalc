@@ -19,8 +19,8 @@ public class MatrixInputConsole {
                 if (cells.length == cals) {
                     for (int ind = 0; ind < cals; ++ind) {
                         String[] cellsSep = cells[ind].split("\\s*,\\s*", 2);
-                        if (!(cellsSep.length == 2) || !(cellsSep[0].matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$")
-                                || !(cellsSep[1].matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$")))) {
+                        if (!(cellsSep.length == 2) || !(cellsSep[0].matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"))
+                                || !(cellsSep[1].matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"))) {
                             System.out.println("Неверное число в " + ind + "элементе. Повторите ввод.");
                             break;
                         }

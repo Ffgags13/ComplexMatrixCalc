@@ -36,7 +36,7 @@ public class ComplexNumber {
             return new ComplexNumber(0,0);
         }
         return new ComplexNumber(
-                (this.real+div.real + this.imagine+div.imagine)
+                (this.real*div.real + this.imagine*div.imagine)
                         / (div.real * div.real+div.imagine * div.imagine),
                 (this.imagine*div.real - this.real*div.imagine)
                         / (div.real * div.real+div.imagine * div.imagine));

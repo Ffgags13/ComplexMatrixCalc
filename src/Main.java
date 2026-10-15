@@ -1,7 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.SocketHandler;
 
 public class Main {
     private static final Scanner consIn = new Scanner(System.in);
@@ -46,10 +45,10 @@ public class Main {
                     String []sizeLineSep = sizeLine.split("\\s* \\s*", 2);
                     while(!(sizeLineSep.length == 2) ||!(sizeLineSep[0].matches("^[+-]?[1-9]+[0-9]*$"))
                             || !(sizeLineSep[1].matches("^[+-]?[1-9]+[0-9]*$"))){
-                    System.out.println("Повторите ввод: ");
-                    sizeLine = consIn.nextLine();
-                    sizeLineSep = sizeLine.split("\\s* \\s*", 2);
-                }
+                        System.out.println("Повторите ввод: ");
+                        sizeLine = consIn.nextLine();
+                        sizeLineSep = sizeLine.split("\\s* \\s*", 2);
+                    }
                     int []sizeArr = {Integer.parseInt(sizeLineSep[0]), Integer.parseInt(sizeLineSep[1])};
                     dictMatrixes.put(nameLine, new ComplexMatrix(MatrixInputConsole.flatComplex(0, sizeArr[0], sizeArr[1])));
                     System.out.println("Матрица создана");
@@ -63,9 +62,9 @@ public class Main {
                     System.out.println("Введите название матрицы для удаления:");
                     System.out.println(dictMatrixes.keySet());
                     String toDelLine = consIn.nextLine();
-                    if(!(toDelLine.isEmpty()) || (dictMatrixes.containsKey(toDelLine))){
+                    if(!(toDelLine.isEmpty()) && (dictMatrixes.containsKey(toDelLine))){
                         System.out.println("Матрица " + toDelLine + " удалена. ");
-                        dictMatrixes.remove(toDelLine)
+                        dictMatrixes.remove(toDelLine);
                     }
                     else
                         System.out.println("Неправильное название, удаление не произведено ");
@@ -75,7 +74,7 @@ public class Main {
                     System.out.println("Выберите матрицу над которой необходимо совершить операцию");
                     System.out.println(dictMatrixes.keySet());
                     String leftMatrix = consIn.nextLine();
-                    if(!(leftMatrix.isEmpty()) || (dictMatrixes.containsKey(leftMatrix))){
+                    if(!(leftMatrix.isEmpty()) && (dictMatrixes.containsKey(leftMatrix))){
                         System.out.println("Выберите действие");
                         System.out.println("1:Сложение");
                         System.out.println("2:Вычитание");
@@ -100,9 +99,77 @@ public class Main {
                             line2Input = consIn.nextLine();
                             input2Com = line2Input.charAt(0);
                         }
-                    }
-                default:
 
+                        ComplexMatrix leftOperand = dictMatrixes.get(leftMatrix);
+
+                        if(input2Com == '1' || input2Com == '2'
+                                || input2Com == '3' || input2Com == '6'){
+                            System.out.println("Выберите вторую матрицу:");
+                            System.out.println(dictMatrixes.keySet());
+                            String rightMatrix = consIn.nextLine();
+                            while(!(dictMatrixes.containsKey(rightMatrix))){
+                                System.out.println("Повторите ввод: ");
+                                rightMatrix = consIn.nextLine();
+                            }
+                            System.out.println("Введите имя для результирующей матрицы: ");
+                            String resultName = consIn.nextLine();
+                            while(dictMatrixes.containsKey(resultName) || resultName.isEmpty()){
+                                System.out.println("Повторите ввод: ");
+                                resultName = consIn.nextLine();
+                            }
+                            ComplexMatrix rightOperand = dictMatrixes.get(rightMatrix);
+                            ComplexMatrix resultMatrix;
+                            if(input2Com == '1')
+                                resultMatrix = leftOperand.add(rightOperand);
+                            else if(input2Com == '2')
+                                resultMatrix = leftOperand.subtraction(rightOperand);
+                            else if(input2Com == '3')
+                                resultMatrix = leftOperand.multiplie(rightOperand);
+                            else
+                                resultMatrix = leftOperand.multiplie(rightOperand.inverse());
+                            dictMatrixes.put(resultName, resultMatrix);
+                            System.out.println("Матрица " + resultName + " создана");
+                        }
+                        else if(input2Com == '4'){
+                            System.out.println("Введите скаляр (действительное число): ");
+                            String scalarLine = consIn.nextLine();
+                            while(!(scalarLine.matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"))){
+                                System.out.println("Повторите ввод: ");
+                                scalarLine = consIn.nextLine();
+                            }
+                            System.out.println("Введите имя для результирующей матрицы: ");
+                            String resultName = consIn.nextLine();
+                            while(dictMatrixes.containsKey(resultName) || resultName.isEmpty()){
+                                System.out.println("Повторите ввод: ");
+                                resultName = consIn.nextLine();
+                            }
+                            dictMatrixes.put(resultName,
+                                    leftOperand.multiplieScalar(Double.parseDouble(scalarLine)));
+                            System.out.println("Матрица " + resultName + " создана");
+                        }
+                        else if(input2Com == '5'){
+                            System.out.println("Определитель матрицы " + leftMatrix
+                                    + " = " + leftOperand.determine());
+                        }
+                    }
+                    else
+                        System.out.println("Неправильное название матрицы, действие не произведено ");
+                    break;
+
+                case '5':
+                    System.out.println("Введите название матрицы для вывода:");
+                    System.out.println(dictMatrixes.keySet());
+                    String showLine = consIn.nextLine();
+                    if(!(showLine.isEmpty()) && dictMatrixes.containsKey(showLine)){
+                        System.out.println(showLine + " = ");
+                        System.out.println(dictMatrixes.get(showLine));
+                    }
+                    else
+                        System.out.println("Неправильное название ");
+                    break;
+
+                default:
+                    System.out.println("Неизвестное действие");
             }
         }
     }

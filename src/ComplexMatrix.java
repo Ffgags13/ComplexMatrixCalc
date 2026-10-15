@@ -15,13 +15,13 @@ public class ComplexMatrix {
                     " исходная матрица не изменена");
             return new ComplexMatrix(this.matrixArr);
         }
-       ComplexNumber[][] result =new ComplexNumber[this.matrixArr.length][this.matrixArr[0].length];
-       for(int i =0; i < matrixArr.length; ++i){
-           for(int j =0; j < matrixArr[0].length; ++j){
-               result[i][j] = this.matrixArr[i][j].add(addend.matrixArr[i][j]);
-           }
-       }
-       return new ComplexMatrix(result);
+        ComplexNumber[][] result =new ComplexNumber[this.matrixArr.length][this.matrixArr[0].length];
+        for(int i =0; i < matrixArr.length; ++i){
+            for(int j =0; j < matrixArr[0].length; ++j){
+                result[i][j] = this.matrixArr[i][j].add(addend.matrixArr[i][j]);
+            }
+        }
+        return new ComplexMatrix(result);
     }
 
     public ComplexMatrix subtraction(ComplexMatrix sub){
@@ -54,8 +54,8 @@ public class ComplexMatrix {
                     tempSumm = tempSumm.add(this.matrixArr[i][s].multiplie(matrixArr[s][j]));
 
                 }
-                    result[i][j] = tempSumm;
-                }
+                result[i][j] = tempSumm;
+            }
         }
         return new ComplexMatrix(result);
     }
@@ -68,20 +68,25 @@ public class ComplexMatrix {
             }
         return new ComplexMatrix(result);
     }
+
     private ComplexMatrix getSubMatrix(ComplexMatrix inputMatrix, int rowSkip, int colSkip){
-        ComplexNumber [][]subMatrixArr = new ComplexNumber[inputMatrix.matrixArr.length][inputMatrix.matrixArr.length];
+        ComplexNumber [][]subMatrixArr = new ComplexNumber[inputMatrix.matrixArr.length - 1][inputMatrix.matrixArr.length - 1];
+        int rowInd = 0;
         for(int i = 0; i < inputMatrix.matrixArr.length;++i){
             if (i == rowSkip)
                 continue;
+            int colInd = 0;
             for(int j = 0; j < inputMatrix.matrixArr.length;++j){
                 if(j == colSkip)
                     continue;
-                subMatrixArr[i][j] = inputMatrix.matrixArr[i][j];
-
+                subMatrixArr[rowInd][colInd] = inputMatrix.matrixArr[i][j];
+                ++colInd;
             }
+            ++rowInd;
         }
         return new ComplexMatrix(subMatrixArr);
     }
+
     public ComplexNumber determine(){
         if(!(this.matrixArr.length == this.matrixArr[0].length)){
             System.out.println("Ошибка, введена не квадратная матрица");
@@ -119,7 +124,18 @@ public class ComplexMatrix {
         return new ComplexMatrix(result);
     }
 
-
+    @Override
+    public String toString(){
+        StringBuilder result = new StringBuilder();
+        for(int i = 0; i < matrixArr.length; ++i){
+            for(int j = 0; j < matrixArr[0].length; ++j){
+                result.append(matrixArr[i][j].toString());
+                if(j + 1 < matrixArr[0].length)
+                    result.append(" ");
+            }
+            if(i + 1 < matrixArr.length)
+                result.append("\n");
+        }
+        return result.toString();
+    }
 }
-
-
