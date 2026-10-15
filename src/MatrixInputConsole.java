@@ -16,21 +16,18 @@ public class MatrixInputConsole {
                     rawLine = matrixIn.nextLine();
                 }
                 String []cells = rawLine.split("\\s*;\\s*", cals);
-                for(int ind = 0; ind < cals; ++ind){
-                    String []cellsSep = cells[ind].split("\\s*,\\s*", 2 );
-                    if(cellsSep[0].isEmpty())
-                        cellsSep[0] ="0";
-                    if(cellsSep[1].isEmpty())
-                        cellsSep[1] ="0";
-                    if(!(cellsSep[0].matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$")
-                            || !(cellsSep[1].matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$") )))
-                    {
-                        System.out.println("Неверное число в " + ind + "элементе. Повторите ввод.");
-                        break;
+                if (cells.length == cals) {
+                    for (int ind = 0; ind < cals; ++ind) {
+                        String[] cellsSep = cells[ind].split("\\s*,\\s*", 2);
+                        if (!(cellsSep.length == 2) || !(cellsSep[0].matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$")
+                                || !(cellsSep[1].matches("^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$")))) {
+                            System.out.println("Неверное число в " + ind + "элементе. Повторите ввод.");
+                            break;
+                        }
+                        matrixArr[i][ind] = new ComplexNumber(Double.parseDouble(cellsSep[0]), Double.parseDouble(cellsSep[1]));
+                        if (ind + 1 == cals)
+                            ++i;
                     }
-                    matrixArr[i][ind] = new ComplexNumber(Double.parseDouble(cellsSep[0]), Double.parseDouble(cellsSep[1]));
-                    if (ind + 1 == cals)
-                        ++i;
                 }
             }
         }

@@ -27,6 +27,9 @@ public class ComplexNumber {
                 this.real*mult.imagine + this.imagine*mult.real);
 
     }
+    public ComplexNumber multiplieScalar(double k){
+        return new ComplexNumber(this.real*k, this.imagine*k);
+    }
     public ComplexNumber division(ComplexNumber div){
         if(div.imagine == 0 && div.real == 0) {
             System.out.println("Ошибка, деление на 0");
